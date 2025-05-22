@@ -1,2 +1,13 @@
-# devops-project-frontend
-This is a repository for the frontend of devops project 
+# Frontend of DevOps Project
+
+### Install dependencies  
+```bash
+    npm install 
+```
+
+### Run the project 
+```bash
+    npm run dev 
+```
+
+
