@@ -1,9 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthLayout } from "./layout/AuthLayout";
 import { Login } from "./pages/Login";
-import { MainRoutes } from "./routes/MainRoutes";
+import { Drivers } from "./pages/Drivers";
 import { Register } from "./pages/Register";
 import { AuthProvider } from './context/AuthProvider'
+import { Dashboard } from "./pages/Dashboard";
+import RutaProtegida  from "./layout/RutaProtegida";
 
 function App() {
   return (
@@ -14,7 +16,12 @@ function App() {
             <Route index element={<Login />} />
             <Route path="/register" element={<Register />} />
           </Route>
-        <Route path="/*" element={<MainRoutes />} />
+
+          <Route path="/admin" element={<RutaProtegida />}>
+            <Route index element={<Dashboard />} />
+            <Route path="drivers" element={<Drivers/>} />
+          </Route>
+          {/* <Route path="/*" element={<MainRoutes />} /> */}
         </Routes>
       </AuthProvider>
     </BrowserRouter>

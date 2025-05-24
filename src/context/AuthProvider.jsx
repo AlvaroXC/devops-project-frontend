@@ -1,29 +1,41 @@
 import {useState, useEffect, createContext} from 'react';
 import axios from 'axios';
+
+
 const AuthContext = createContext(); 
 
 const AuthProvider = ({children}) => {
 
     const [auth, setAuth] = useState({});
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const authUser = async () => {
             const token = localStorage.getItem('token'); 
-            if(!token) return 
+            
+            if(!token){
+                setLoading(false)
+                return
+            }
+            
             
             const config = {
                 headers:{
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
+                    'Authorization': `Bearer ${token}`
                 }
             }
 
             try {
-                const response = await axios.get('http://127.0.0.1:5000/vehicle', config);
-                console.log(response)
+                const { data } = await axios('http://127.0.0.1:5000/admin/profile', config);
+                setAuth(data.data)  
+                
             } catch (error) {
-                console.log(error);
+                console.log(error.response.data.message);
+                setAuth({})
             }
+
+            setLoading(false)
 
         }
         authUser()
@@ -33,7 +45,8 @@ const AuthProvider = ({children}) => {
         <AuthContext.Provider
             value={{
                 auth,
-                setAuth
+                setAuth,
+                loading
             }}
         >
             {children}

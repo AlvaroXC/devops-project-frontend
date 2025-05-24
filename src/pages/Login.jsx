@@ -6,46 +6,48 @@ import axios from 'axios'
 
 export const Login = () => {
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [alertMessage, setAlertMessage] = useState({})
-  const navigate = useNavigate()
 
-  const handleSubmit = async(e) => {
-    e.preventDefault();
-    if([email, password].includes('')){
-        setAlertMessage({msg:'Todos los campos son requeridos', error: true})
-        return
-    }
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [alertMessage, setAlertMessage] = useState({})
+    const navigate = useNavigate()
 
-    if(password.length < 8){
-        setAlertMessage({msg:'La contraseña debe ser de almenos 8 caracteres', error: true})
-        return
-    }
-
-    try {
-        const response = await axios.post('http://127.0.0.1:5000/admin/login', {
-            email, 
-            password
-        })
-        console.log(response.data)
-        localStorage.setItem('token', response.data.access_token)
-        setAlertMessage({msg: response.data.message, error: false})
-        setTimeout(() => {
-          navigate('/dashboard')
-        }, 2000)
-
-
-    } catch (error) {
-        if(error.response.status === 401){
-            setAlertMessage({msg: error.response.data.message, error: true})
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+        if([email, password].includes('')){
+            setAlertMessage({msg:'Todos los campos son requeridos', error: true})
             return
         }
-        setAlertMessage({msg: 'Hubo un error al iniciar sesión', error: true})
-    }
 
-  }
-  const {msg} = alertMessage;
+        if(password.length < 8){
+            setAlertMessage({msg:'La contraseña debe ser de almenos 8 caracteres', error: true})
+            return
+        }
+
+        try {
+            const response = await axios.post('http://127.0.0.1:5000/admin/login', {
+                email, 
+                password
+            })
+            
+            localStorage.setItem('token', response.data.access_token)
+            setAlertMessage({msg: response.data.message, error: false})
+
+            setTimeout(() => {
+                navigate('/admin')
+            }, 2000)
+
+
+        } catch (error) {
+            if(error.response.status === 401){
+                setAlertMessage({msg: error.response.data.message, error: true})
+                return
+            }
+            setAlertMessage({msg: 'Hubo un error al iniciar sesión', error: true})
+        }
+
+    }
+    const {msg} = alertMessage;
 
 
   return (
