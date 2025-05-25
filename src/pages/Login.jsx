@@ -1,6 +1,7 @@
 import {useState} from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import { Alert } from '../components/Alert'
+import useAuth from '../hooks/useAuth'
 import axios from 'axios'
 
 
@@ -10,6 +11,9 @@ export const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [alertMessage, setAlertMessage] = useState({})
+
+    const {setAuth} = useAuth()
+
     const navigate = useNavigate()
 
     const handleSubmit = async(e) => {
@@ -31,11 +35,8 @@ export const Login = () => {
             })
             
             localStorage.setItem('token', response.data.access_token)
-            setAlertMessage({msg: response.data.message, error: false})
-
-            setTimeout(() => {
-                navigate('/admin')
-            }, 2000)
+            setAuth(response.data)
+            navigate('/admin')
 
 
         } catch (error) {
