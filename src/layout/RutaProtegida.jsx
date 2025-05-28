@@ -1,21 +1,20 @@
-import { Outlet, Navigate } from "react-router-dom"
-import useAuth from '../hooks/useAuth'
+import { Outlet, Navigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 import { Footer } from "../pages/Footer";
 
 const RutaProtegida = () => {
-    const {auth, loading} = useAuth()
+  const { auth, loading } = useAuth();
 
-    if(loading) return 'Cargando...'
+  if (loading) return "Cargando...";
 
-    return (
-        <>
-            <h1>Esta es una ruta protegida</h1>
-            
-                {auth?.id ? <Outlet/> : <Navigate to='/' />}
+  return (
+    <>
+      <div className="h-full flex flex-col">
+        {auth?.id ? <Outlet /> : <Navigate to="/" />}
+        <Footer />
+      </div>
+    </>
+  );
+};
 
-            <Footer/>
-        </>
-    )
-}
-
-export default RutaProtegida
+export default RutaProtegida;

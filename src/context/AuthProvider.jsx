@@ -1,60 +1,57 @@
-import {useState, useEffect, createContext} from 'react';
-import axios from 'axios';
+import { useState, useEffect, createContext } from "react";
+import axios from "axios";
 
+const AuthContext = createContext();
 
-const AuthContext = createContext(); 
+const AuthProvider = ({ children }) => {
+  const [auth, setAuth] = useState({});
+  const [loading, setLoading] = useState(true);
 
-const AuthProvider = ({children}) => {
+  useEffect(() => {
+    const authUser = async () => {
+      const token = localStorage.getItem('token');
 
-    const [auth, setAuth] = useState({});
-    const [loading, setLoading] = useState(true);
+      if (!token) {
+        setLoading(false);
+        return;
+      }
 
-    useEffect(() => {
-        const authUser = async () => {
-            const token = localStorage.getItem('token'); 
-            
-            if(!token){
-                setLoading(false)
-                return
-            }
-            
-            
-            const config = {
-                headers:{
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            }
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
 
-            try {
-                const { data } = await axios('http://127.0.0.1:5000/admin/profile', config);
-                setAuth(data.data)  
-                
-            } catch (error) {
-                console.log(error.response.data.message);
-                setAuth({})
-            }
+      try {
+        const { data } = await axios(
+          "http://127.0.0.1:5000/admin/profile",
+          config
+        );
+        console.log(data);
+        setAuth(data.data);
+      } catch (error) {
+        console.log(error.response.data.message);
+        setAuth({});
+      }
 
-            setLoading(false)
+      setLoading(false);
+    };
+    authUser();
+  }, []);
 
-        }
-        authUser()
-    }, [])
+  return (
+    <AuthContext.Provider
+      value={{
+        auth,
+        setAuth,
+        loading,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
-    return (
-        <AuthContext.Provider
-            value={{
-                auth,
-                setAuth,
-                loading
-            }}
-        >
-            {children}
-        </AuthContext.Provider>
-    )
-}
-
-export {
-    AuthProvider
-}
-export default AuthContext
+export { AuthProvider };
+export default AuthContext;
