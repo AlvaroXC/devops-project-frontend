@@ -9,27 +9,40 @@ import RutaProtegida from "./layout/RutaProtegida";
 import { RegisterVehicle } from "./pages/RegisterVehicle";
 import { RegisterDrivers } from "./pages/RegisterDrivers";
 import { DriversProvider } from "./context/DriverProvider";
+import { DashboardProvider } from "./context/DashboardProvider";
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <VehiclesProvider>
-          <DriversProvider>
-            <Routes>
-              <Route path="/" element={<AuthLayout />}>
-                <Route index element={<Login />} />
-                <Route path="/register" element={<Register />} />
-              </Route>
+          <Routes>
+            <Route path="/" element={<AuthLayout />}>
+              <Route index element={<Login />} />
+              <Route path="/register" element={<Register />} />
+            </Route>
 
-              <Route path="/admin" element={<RutaProtegida />}>
-                <Route index element={<Dashboard />} />
-                <Route path="drivers" element={<RegisterDrivers />} />
-                <Route path="vehicles" element={<RegisterVehicle />} />
-              </Route>
-              {/* <Route path="/*" element={<MainRoutes />} /> */}
-            </Routes>
-          </DriversProvider>
+            <Route path="/admin" element={<RutaProtegida />}>
+              <Route
+                index
+                element={
+                  <DashboardProvider>
+                    <Dashboard />
+                  </DashboardProvider>
+                }
+              ></Route>
+              <Route
+                path="drivers"
+                element={
+                  <DriversProvider>
+                    <RegisterDrivers />
+                  </DriversProvider>
+                }
+              />
+              <Route path="vehicles" element={<RegisterVehicle />} />
+            </Route>
+            {/* <Route path="/*" element={<MainRoutes />} /> */}
+          </Routes>
         </VehiclesProvider>
       </AuthProvider>
     </BrowserRouter>
