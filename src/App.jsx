@@ -10,6 +10,8 @@ import { RegisterVehicle } from "./pages/RegisterVehicle";
 import { RegisterDrivers } from "./pages/RegisterDrivers";
 import { DriversProvider } from "./context/DriverProvider";
 import { DashboardProvider } from "./context/DashboardProvider";
+import { RegisterRoute } from "./pages/RegisterRoute";
+import { RoutesProvider } from './context/RouteProvider'
 
 function App() {
   return (
