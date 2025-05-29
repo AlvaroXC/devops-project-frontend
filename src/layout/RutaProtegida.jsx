@@ -1,6 +1,7 @@
 import { Outlet, Navigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import { Footer } from "../pages/Footer";
+import { Footer } from "../components/Footer";
+import Header from "../components/Header";
 
 const RutaProtegida = () => {
   const { auth, loading } = useAuth();
@@ -9,10 +10,13 @@ const RutaProtegida = () => {
 
   return (
     <>
-      <div className="h-full flex flex-col">
-        {auth?.id ? <Outlet /> : <Navigate to="/" />}
-        <Footer />
-      </div>
+      <Header/>
+          {auth?.id ? (
+            <main className="container mx-auto mt-10"> 
+              <Outlet />
+            </main>
+            ) : <Navigate to="/" />}
+      <Footer />
     </>
   );
 };
