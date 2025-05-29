@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react"
 import { Alert } from "./Alert"
 import useAssignments from "../hooks/useAssignments"
+import useVehicles from "../hooks/useVehicles"
+import useDrivers from "../hooks/useDrivers"
 
 export const AssignmentForm = () => {
     const [vehicleId, setVehicleId] = useState('')
@@ -9,7 +11,9 @@ export const AssignmentForm = () => {
 
     const [alertMessage, setAlertMessage] = useState({})
 
-    const {saveAssignment, assignment, vehicles, drivers} = useAssignments()
+    const {saveAssignment, assignment} = useAssignments()
+    const {vehicles} = useVehicles()
+    const {drivers} = useDrivers()
     
     useEffect(() => {
         if(assignment?.vehicle_id){

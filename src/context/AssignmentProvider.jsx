@@ -26,16 +26,12 @@ const fetchData = async (endpoint, setData) => {
 const AssignmentsProvider = ({children}) => {
     const [assignments, setAssignments] = useState([])
     const [assignment, setAssignment] = useState({})
-    const [vehicles, setVehicles] = useState([])
-    const [drivers, setDrivers] = useState([])
 
     useEffect(() => {
         // Obtenemos todos los datos necesarios
         const fetchAllData = async () => {
             await Promise.all([
                 fetchData('assignments', setAssignments),
-                fetchData('vehicle', setVehicles),
-                fetchData('drivers', setDrivers)
             ])
         }
         fetchAllData()
@@ -97,28 +93,15 @@ const AssignmentsProvider = ({children}) => {
         }
     }
 
-    const getVehicleName = (vehicleId) => {
-        const vehicle = vehicles.find(v => v.id === vehicleId)
-        return vehicle ? `${vehicle.brand} ${vehicle.model} - ${vehicle.license_plate}` : 'Vehículo no encontrado'
-    }
-
-    const getDriverName = (driverId) => {
-        const driver = drivers.find(d => d.id === driverId)
-        return driver ? driver.name : 'Conductor no encontrado'
-    }
 
     return (
         <AssignmentsContext.Provider
             value={{
                 assignments,
                 assignment,
-                vehicles,
-                drivers,
                 saveAssignment,
                 updateAssignment,
                 deleteAssignment,
-                getVehicleName,
-                getDriverName
             }}
         >
             {children}
