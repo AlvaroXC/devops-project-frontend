@@ -1,40 +1,30 @@
 pipeline {
     agent any
 
-    environment {
-        IMAGE_NAME = 'devops-frontend'
-        CONTAINER_NAME = 'frontend_container'
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/AlvaroXC/devops-project-frontend.git', branch: 'development'
+                git branch: 'development', url: 'https://github.com/AlvaroXC/devops-project-frontend.git'
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Install dependencies') {
             steps {
-                script {
-                    sh 'docker build -t $IMAGE_NAME .'
-                }
+                sh 'npm install'
             }
         }
 
-        stage('Stop Previous Container') {
+        stage('Build') {
             steps {
-                script {
-                    sh 'docker stop $CONTAINER_NAME || true'
-                    sh 'docker rm $CONTAINER_NAME || true'
-                }
+                sh 'npm run build'
             }
         }
 
-        stage('Run New Container') {
+        stage('Deploy') {
             steps {
-                script {
-                    sh 'docker run -d -p 80:80 --name $CONTAINER_NAME $IMAGE_NAME'
-                }
+                // Copiamos los archivos estáticos al directorio de Nginx
+                sh 'sudo rm -rf /var/www/html/*'
+                sh 'sudo cp -r dist/* /var/www/html/'
             }
         }
     }
