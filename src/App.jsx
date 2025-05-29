@@ -13,7 +13,7 @@ import { DashboardProvider } from "./context/DashboardProvider";
 import { RegisterRoute } from "./pages/RegisterRoute";
 import { RoutesProvider } from './context/RouteProvider'
 import { RegisterAssignment } from "./pages/RegisterAssignment";
-import { RegisterRoute } from "./pages/RegisterRoute";
+import { AssignmentsProvider } from './context/AssignmentProvider'
 
 function App() {
   return (

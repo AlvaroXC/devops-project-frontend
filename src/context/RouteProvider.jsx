@@ -21,7 +21,7 @@ const RoutesProvider = ({ children }) => {
                     }
                 };
 
-                const { data } = await axios('http://127.0.0.1:5000/routes/', config);
+                const { data } = await axios('http://127.0.0.1:5001/routes/', config);
                 setRoutes(data.data || []);
             } catch (error) {
                 console.log(error);
@@ -40,7 +40,7 @@ const RoutesProvider = ({ children }) => {
                     }
                 };
 
-                const { data } = await axios('http://127.0.0.1:5000/assignments/', config);
+                const { data } = await axios('http://127.0.0.1:5001/assignments/', config);
                 setAssignments(data || []);
             } catch (error) {
                 console.log(error);
@@ -77,7 +77,7 @@ const RoutesProvider = ({ children }) => {
         if (routeData.id) {
             try {
                 const { data } = await axios.put(
-                    `http://127.0.0.1:5000/routes/${routeData.id}`,
+                    `http://127.0.0.1:5001/routes/${routeData.id}`,
                     transformedData,
                     config
                 );
@@ -92,9 +92,9 @@ const RoutesProvider = ({ children }) => {
             }
         } else {
             try {
-                const { data } = await axios.post('http://127.0.0.1:5000/routes/', transformedData, config);
+                const { data } = await axios.post('http://127.0.0.1:5001/routes/', transformedData, config);
                 if (data.id) {
-                    const newRouteResponse = await axios.get(`http://127.0.0.1:5000/routes/${data.id}`, config);
+                    const newRouteResponse = await axios.get(`http://127.0.0.1:5001/routes/${data.id}`, config);
                     setRoutes(prevRoutes => [...prevRoutes, newRouteResponse.data.data]);
                 }
             } catch (error) {
@@ -118,7 +118,7 @@ const RoutesProvider = ({ children }) => {
                         "Authorization": `Bearer ${token}`
                     }
                 };
-                await axios.delete(`http://127.0.0.1:5000/routes/${id}`, config);
+                await axios.delete(`http://127.0.0.1:5001/routes/${id}`, config);
                 setRoutes(prevRoutes =>
                     prevRoutes.filter(route => route.id !== id)
                 );

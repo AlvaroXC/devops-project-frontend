@@ -21,7 +21,7 @@ const DashboardProvider = ({ children }) => {
         };
 
         const { data } = await axios(
-          "http://127.0.0.1:5000/dashboard/",
+          "http://127.0.0.1:5001/dashboard/",
           config
         );
         setCounts(data);
