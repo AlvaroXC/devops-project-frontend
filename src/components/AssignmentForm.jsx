@@ -22,6 +22,16 @@ export const AssignmentForm = () => {
             setId(assignment.id)
         }
     }, [assignment])
+
+    useEffect(() => {
+        if (alertMessage.msg) {
+            const timer = setTimeout(() => {
+                setAlertMessage({})
+            }, 5000)
+
+            return () => clearTimeout(timer)
+        }
+    }, [alertMessage.msg])
     
 
     const handleSubmit = (e) => {
