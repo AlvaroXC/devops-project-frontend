@@ -20,7 +20,7 @@ const DriversProvider = ({ children }) => {
           },
         };
 
-        const { data } = await axios("http://127.0.0.1:5000/drivers/", config);
+        const { data } = await axios("http://127.0.0.1:5001/drivers/", config);
         setDrivers(data);
       } catch (error) {
         console.log(error);
@@ -43,7 +43,7 @@ const DriversProvider = ({ children }) => {
         const { id, ...payload } = driver;
 
         const { data } = await axios.put(
-          `http://127.0.0.1:5000/drivers/${driver.id}`,
+          `http://127.0.0.1:5001/drivers/${driver.id}`,
           payload,
           config
         );
@@ -57,7 +57,7 @@ const DriversProvider = ({ children }) => {
     } else {
       try {
         const { data } = await axios.post(
-          "http://127.0.0.1:5000/drivers/",
+          "http://127.0.0.1:5001/drivers/",
           driver,
           config
         );
@@ -83,7 +83,7 @@ const DriversProvider = ({ children }) => {
             Authorization: `Bearer ${token}`,
           },
         };
-        axios.delete(`http://127.0.0.1:5000/drivers/${id}`, config);
+        axios.delete(`http://127.0.0.1:5001/drivers/${id}`, config);
         setDrivers((prevDrivers) =>
           prevDrivers.filter((driver) => driver.id !== id)
         );

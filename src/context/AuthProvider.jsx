@@ -25,7 +25,7 @@ const AuthProvider = ({ children }) => {
 
       try {
         const { data } = await axios(
-          "http://127.0.0.1:5000/admin/profile",
+          "http://127.0.0.1:5001/admin/profile",
           config
         );
         console.log(data);

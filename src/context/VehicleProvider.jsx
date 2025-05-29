@@ -23,7 +23,7 @@ const VehiclesProvider = ({children}) => {
                     }
                 }
 
-                const {data } = await axios('http://127.0.0.1:5000/vehicle/', config)
+                const {data } = await axios('http://127.0.0.1:5001/vehicle/', config)
                 
                 setVehicles(data.data)
                 
@@ -49,7 +49,7 @@ const VehiclesProvider = ({children}) => {
             try {
                 const { id, ...payload } = vehicle;
                 
-                const { data } = await axios.put(`http://127.0.0.1:5000/vehicle/${vehicle.id}`, payload, config)
+                const { data } = await axios.put(`http://127.0.0.1:5001/vehicle/${vehicle.id}`, payload, config)
                 setVehicles(prevVehicles => 
                     prevVehicles.map(v => 
                         v.id === vehicle.id ? data.data : v
@@ -62,7 +62,7 @@ const VehiclesProvider = ({children}) => {
             }
         }else{
             try {
-                const { data } = await axios.post('http://127.0.0.1:5000/vehicle/', vehicle, config)
+                const { data } = await axios.post('http://127.0.0.1:5001/vehicle/', vehicle, config)
                 setVehicles(prevVehicles => [...prevVehicles, data.data])
                 
             } catch (error) {
@@ -87,7 +87,7 @@ const VehiclesProvider = ({children}) => {
                         "Authorization": `Bearer ${token}`
                     }
                 }
-                const {data} = axios.delete(`http://127.0.0.1:5000/vehicle/${id}`, config)
+                const {data} = axios.delete(`http://127.0.0.1:5001/vehicle/${id}`, config)
                 setVehicles(prevVehicles => 
                     prevVehicles.filter(vehicle => vehicle.id !== id)
                 )

@@ -16,7 +16,7 @@ const fetchData = async (endpoint, setData) => {
             }
         }
 
-        const {data} = await axios(`http://127.0.0.1:5000/${endpoint}/`, config)
+        const {data} = await axios(`http://127.0.0.1:5001/${endpoint}/`, config)
         setData(endpoint === 'vehicle' ? data.data : data)
     } catch (error) {
         console.log(error)
@@ -53,7 +53,7 @@ const AssignmentsProvider = ({children}) => {
         if(assignment.id){
             try {
                 const { id, ...payload } = assignment;
-                const { data } = await axios.put(`http://127.0.0.1:5000/assignments/${assignment.id}`, payload, config)
+                const { data } = await axios.put(`http://127.0.0.1:5001/assignments/${assignment.id}`, payload, config)
                 setAssignments(prevAssignments => 
                     prevAssignments.map(a => 
                         a.id === assignment.id ? {...assignment, id: data.id} : a
@@ -64,7 +64,7 @@ const AssignmentsProvider = ({children}) => {
             }
         } else {
             try {
-                const { data } = await axios.post('http://127.0.0.1:5000/assignments/', assignment, config)
+                const { data } = await axios.post('http://127.0.0.1:5001/assignments/', assignment, config)
                 setAssignments(prevAssignments => [...prevAssignments, {...assignment, id: data.id}])
             } catch (error) {
                 console.log(error)
@@ -87,7 +87,7 @@ const AssignmentsProvider = ({children}) => {
                         "Authorization": `Bearer ${token}`
                     }
                 }
-                await axios.delete(`http://127.0.0.1:5000/assignments/${id}`, config)
+                await axios.delete(`http://127.0.0.1:5001/assignments/${id}`, config)
                 setAssignments(prevAssignments => 
                     prevAssignments.filter(assignment => assignment.id !== id)
                 )
