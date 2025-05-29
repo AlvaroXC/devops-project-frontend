@@ -53,6 +53,16 @@ export const RouteForm = () => {
         }
     }, [route])
 
+            useEffect(() => {
+        if (alertMessage.msg) {
+            const timer = setTimeout(() => {
+                setAlertMessage({})
+            }, 5000)
+
+            return () => clearTimeout(timer)
+        }
+    }, [alertMessage.msg])
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         

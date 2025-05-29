@@ -48,25 +48,42 @@ const VehiclesProvider = ({children}) => {
         if(vehicle.id){
             try {
                 const { id, ...payload } = vehicle;
-                
-                const { data } = await axios.put(`http://127.0.0.1:5001/vehicle/${vehicle.id}`, payload, config)
-                setVehicles(prevVehicles => 
-                    prevVehicles.map(v => 
-                        v.id === vehicle.id ? data.data : v
+
+                const response = await axios.put(`http://127.0.0.1:5001/vehicle/${vehicle.id}`, payload, config);
+                const { data, message } = response.data;
+
+                setVehicles(prevVehicles =>
+                    prevVehicles.map(v =>
+                        v.id === vehicle.id ? data : v
                     )
-                )
-                
+                );
+
+                return { message, error: false };
 
             } catch (error) {
-                console.log(error)
+                if (error.response && error.response.data) {
+                    const { message } = error.response.data;
+                    return { message, error: true };
+                } else {
+                    return { message: 'Ocurrió un error al actualizar el vehículo.', error: true };
+                }
             }
+
         }else{
             try {
-                const { data } = await axios.post('http://127.0.0.1:5001/vehicle/', vehicle, config)
-                setVehicles(prevVehicles => [...prevVehicles, data.data])
-                
+                const response = await axios.post('http://127.0.0.1:5001/vehicle/', vehicle, config);
+                const { data, message } = response.data;
+
+                setVehicles(prevVehicles => [...prevVehicles, data]);
+                return { message, error: false };
+
             } catch (error) {
-                console.log(error)
+                if (error.response && error.response.data) {
+                    const { message } = error.response.data;
+                    return { message, error: true };
+                } else {
+                    return { message: 'Ocurrió un error al crear el vehículo.', error: true };
+                }
             }
         }
 
@@ -87,7 +104,7 @@ const VehiclesProvider = ({children}) => {
                         "Authorization": `Bearer ${token}`
                     }
                 }
-                const {data} = axios.delete(`http://127.0.0.1:5001/vehicle/${id}`, config)
+                axios.delete(`http://127.0.0.1:5001/vehicle/${id}`, config)
                 setVehicles(prevVehicles => 
                     prevVehicles.filter(vehicle => vehicle.id !== id)
                 )
