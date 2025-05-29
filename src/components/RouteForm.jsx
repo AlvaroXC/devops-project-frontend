@@ -2,6 +2,8 @@ import { useState, useEffect } from "react"
 import { Alert } from "./Alert"
 import useRoutes from "../hooks/useRoutes"
 import useAssignments from "../hooks/useAssignments"
+import useVehicles from "../hooks/useVehicles"
+import useDrivers from "../hooks/useDrivers"
 
 export const RouteForm = () => {
     const [name, setName] = useState('')
@@ -18,9 +20,11 @@ export const RouteForm = () => {
 
     const [alertMessage, setAlertMessage] = useState({})
 
-    const { saveRoute, route, getAvailableAssignments } = useRoutes()
-    const { vehicles, drivers } = useAssignments()
-    const availableAssignments = getAvailableAssignments()
+    const { saveRoute, route } = useRoutes()
+    const { vehicles } = useVehicles()
+    const { drivers } = useDrivers()
+    const {assignments} = useAssignments()
+
 
     const getDetailedAssignmentInfo = (assignment) => {
         const vehicle = vehicles.find(v => v.id === assignment.vehicle_id)
@@ -144,7 +148,7 @@ export const RouteForm = () => {
                         onChange={e => setAssignmentId(e.target.value)}
                     >
                         <option value="">-- Selecciona una Asignación --</option>
-                        {availableAssignments.map(assignment => {
+                        {assignments.map(assignment => {
                             const details = getDetailedAssignmentInfo(assignment)
                             return (
                                 <option key={assignment.id} value={assignment.id}>

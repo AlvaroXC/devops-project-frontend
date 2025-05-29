@@ -1,9 +1,14 @@
 import useRoutes from "../hooks/useRoutes"
+import useVehicles from "../hooks/useVehicles"
+import useDrivers from "../hooks/useDrivers"
 import useAssignments from "../hooks/useAssignments"
+
 
 export const Route = ({route}) => {
     const {updateRoute, deleteRoute} = useRoutes()
-    const {vehicles, drivers} = useAssignments()
+    const {vehicles} = useVehicles()
+    const {drivers} = useDrivers()
+    const {assignments} = useAssignments()
     const {name, date, origin_lat, origin_lng, destination_lat, destination_lng, assignment_id, status, problem_description, comments, id} = route
 
     const modifiedDate = (date) => {
@@ -22,20 +27,24 @@ export const Route = ({route}) => {
     }
 
     const getAssignmentDetails = () => {
-        const assignment = {
-            vehicle: vehicles.find(v => v.id === route.vehicle_id),
-            driver: drivers.find(d => d.id === route.driver_id)
+        const assignment = assignments.find(a => a.id === route.assignment_id)
+
+        if (!assignment) {
+            return {
+                vehicleInfo: 'Asignación no encontrada',
+                driverInfo: 'Asignación no encontrada'
+            }
         }
 
+        const vehicle = vehicles.find(v => String(v.id) === String(assignment.vehicle_id))
+        const driver = drivers.find(d => String(d.id) === String(assignment.driver_id))
+
         return {
-            vehicleInfo: assignment.vehicle ? 
-                `${assignment.vehicle.brand} ${assignment.vehicle.model} (${assignment.vehicle.license_plate})` : 
-                'Vehículo no encontrado',
-            driverInfo: assignment.driver ? 
-                `${assignment.driver.name} (${assignment.driver.license_number})` : 
-                'Conductor no encontrado'
+            vehicleInfo: vehicle ? `${vehicle.brand} ${vehicle.model}` : 'Vehículo no encontrado',
+            driverInfo: driver ? `${driver.name} (${driver.license_number})` : 'Conductor no encontrado'
         }
     }
+
 
     const assignmentDetails = getAssignmentDetails();
 
@@ -50,10 +59,12 @@ export const Route = ({route}) => {
             <div className="my-4 p-4 bg-gray-50 rounded-lg">
                 <h3 className="font-bold text-indigo-700 mb-2">Detalles de la Asignación:</h3>
                 <p className="text-sm text-gray-600 mb-2">
-                    <span className="font-semibold">Vehículo:</span> {assignmentDetails.vehicleInfo}
+                    <span className="font-semibold">Vehículo:</span> 
+                    {assignmentDetails.vehicleInfo}
                 </p>
                 <p className="text-sm text-gray-600">
-                    <span className="font-semibold">Conductor:</span> {assignmentDetails.driverInfo}
+                    <span className="font-semibold">Conductor:</span> 
+                    {assignmentDetails.driverInfo}
                 </p>
             </div>
             <p className="font-bold uppercase text-indigo-700 my-2">Estado: {''}

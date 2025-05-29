@@ -6,7 +6,6 @@ const RoutesContext = createContext();
 const RoutesProvider = ({ children }) => {
     const [routes, setRoutes] = useState([]);
     const [route, setRoute] = useState({});
-    const [assignments, setAssignments] = useState([]);
 
     useEffect(() => {
         const getRoutes = async () => {
@@ -28,27 +27,8 @@ const RoutesProvider = ({ children }) => {
             }
         };
 
-        const getAssignments = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) return;
-
-                const config = {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    }
-                };
-
-                const { data } = await axios('http://127.0.0.1:5001/assignments/', config);
-                setAssignments(data || []);
-            } catch (error) {
-                console.log(error);
-            }
-        };
 
         getRoutes();
-        getAssignments();
     }, []);
 
     const saveRoute = async (routeData) => {
@@ -128,24 +108,6 @@ const RoutesProvider = ({ children }) => {
         }
     };
 
-    const getAssignmentInfo = (assignmentId) => {
-        const assignment = assignments.find(a => a.id === parseInt(assignmentId));
-        if (!assignment) return null;
-
-        return {
-            id: assignment.id,
-            displayName: `${assignment.id} - ${assignment.driver_name} - ${assignment.vehicle_model}`
-        };
-    };
-
-    const getAvailableAssignments = () => {
-        return assignments.filter(assignment =>
-            !routes.some(route =>
-                route.assignment_id === assignment.id &&
-                ['pending', 'in_progress'].includes(route.status)
-            )
-        );
-    };
 
     return (
         <RoutesContext.Provider
@@ -155,8 +117,6 @@ const RoutesProvider = ({ children }) => {
                 saveRoute,
                 updateRoute,
                 deleteRoute,
-                getAssignmentInfo,
-                getAvailableAssignments
             }}
         >
             {children}
