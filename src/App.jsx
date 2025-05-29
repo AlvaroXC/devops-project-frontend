@@ -12,39 +12,47 @@ import { DriversProvider } from "./context/DriverProvider";
 import { DashboardProvider } from "./context/DashboardProvider";
 import { RegisterRoute } from "./pages/RegisterRoute";
 import { RoutesProvider } from './context/RouteProvider'
+import { RegisterAssignment } from "./pages/RegisterAssignment";
+import { RegisterRoute } from "./pages/RegisterRoute";
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <VehiclesProvider>
-          <Routes>
-            <Route path="/" element={<AuthLayout />}>
-              <Route index element={<Login />} />
-              <Route path="/register" element={<Register />} />
-            </Route>
+          <AssignmentsProvider>
+            <RoutesProvider>
+              <Routes>
+                <Route path="/" element={<AuthLayout />}>
+                  <Route index element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                </Route>
 
-            <Route path="/admin" element={<RutaProtegida />}>
-              <Route
-                index
-                element={
-                  <DashboardProvider>
-                    <Dashboard />
-                  </DashboardProvider>
-                }
-              ></Route>
-              <Route
-                path="drivers"
-                element={
-                  <DriversProvider>
-                    <RegisterDrivers />
-                  </DriversProvider>
-                }
-              />
-              <Route path="vehicles" element={<RegisterVehicle />} />
-            </Route>
-            {/* <Route path="/*" element={<MainRoutes />} /> */}
-          </Routes>
+                <Route path="/admin" element={<RutaProtegida />}>
+                  <Route
+                    index
+                    element={
+                      <DashboardProvider>
+                        <Dashboard />
+                      </DashboardProvider>
+                    }
+                  ></Route>
+                  <Route
+                    path="drivers"
+                    element={
+                      <DriversProvider>
+                        <RegisterDrivers />
+                      </DriversProvider>
+                    }
+                  />
+                  <Route path="vehicles" element={<RegisterVehicle />} />
+                  <Route path="assignments" element={<RegisterAssignment/>} />
+                  <Route path="routes" element={<RegisterRoute/>} />
+                </Route>
+                {/* <Route path="/*" element={<MainRoutes />} /> */}
+              </Routes>  
+            </RoutesProvider>
+          </AssignmentsProvider>
         </VehiclesProvider>
       </AuthProvider>
     </BrowserRouter>
