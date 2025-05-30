@@ -11,7 +11,7 @@ pipeline {
         stage('Copy Build Artifacts') {
             steps {
                 copyArtifacts(
-                    projectName: 'NOMBRE_DEL_JOB_DE_BUILD', // Cambia por el nombre real de tu job de build
+                    projectName: 'Build',
                     selector: 'lastSuccessful',
                     filter: 'dist/**'
                 )
