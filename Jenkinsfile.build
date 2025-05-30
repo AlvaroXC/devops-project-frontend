@@ -23,8 +23,8 @@ pipeline {
 
     post {
         success {
-            // Archiva la carpeta build para que pueda ser copiada por otro job
-            archiveArtifacts artifacts: 'build/**', fingerprint: true
+            // Archiva la carpeta dist para que pueda ser usada por el pipeline de deploy
+            archiveArtifacts artifacts: 'dist/**', fingerprint: true
             echo 'Build completado con éxito.'
         }
         failure {

@@ -22,7 +22,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 sshagent(['ssh-jenkins-vm']) {
-                    sh 'scp -r build/* devops@192.168.100.62:/var/www/react_app/'
+                    sh 'scp -r dist/* devops@192.168.100.62:/var/www/react_app/'
                     sh 'ssh devops@192.168.100.62 "sudo chown -R www-data:www-data /var/www/react_app && sudo systemctl restart nginx"'
                 }
             }
