@@ -2,13 +2,28 @@ pipeline {
     agent any
 
     stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'development', url: 'https://github.com/AlvaroXC/devops-project-frontend.git'
+            }
+        }
+
+        stage('Copy Build Artifacts') {
+            steps {
+                // Copia los artefactos del último build exitoso del job de build
+                copyArtifacts(
+                    projectName: 'NOMBRE_DEL_JOB_DE_BUILD', // Cambia por el nombre real de tu job de build
+                    selector: lastSuccessful(),
+                    fingerprintArtifacts: true
+                )
+            }
+        }
+
         stage('Deploy') {
             steps {
-                sshagent(['ssh-jenkins-vm']) {  // Usa el ID de credencial SSH en Jenkins
-                    // Copia los archivos build a la ruta donde Nginx sirve la app
+                sshagent(['ssh-jenkins-vm']) {
                     sh 'scp -r build/* devops@192.168.100.62:/var/www/react_app/'
-
-                    sh 'ssh devobs@192.168.100.62 "sudo chown -R www-data:www-data /var/www/react_app && sudo systemctl restart nginx"'
+                    sh 'ssh devops@192.168.100.62 "sudo chown -R www-data:www-data /var/www/react_app && sudo systemctl restart nginx"'
                 }
             }
         }

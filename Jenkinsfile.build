@@ -3,7 +3,6 @@ pipeline {
 
     stages {
         stage('Checkout') {
-
             steps {
                 git branch: 'development', url: 'https://github.com/AlvaroXC/devops-project-frontend.git'
             }
@@ -11,14 +10,12 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                // Instala las dependencias con npm
                 sh 'npm install'
             }
         }
 
         stage('Build') {
             steps {
-                // Construye la aplicación React para producción
                 sh 'npm run build'
             }
         }
@@ -26,6 +23,8 @@ pipeline {
 
     post {
         success {
+            // Archiva la carpeta build para que pueda ser copiada por otro job
+            archiveArtifacts artifacts: 'build/**', fingerprint: true
             echo 'Build completado con éxito.'
         }
         failure {
