@@ -3,9 +3,9 @@ pipeline {
 
     stages {
         stage('Checkout') {
+
             steps {
-                // Clona tu repositorio con el código React
-                git 'https://github.com/AlvaroXC/devops-project-frontend.git'
+                git branch: 'development', url: 'https://github.com/AlvaroXC/devops-project-frontend.git'
             }
         }
 
