@@ -10,11 +10,10 @@ pipeline {
 
         stage('Copy Build Artifacts') {
             steps {
-                // Copia los artefactos del último build exitoso del job de build
                 copyArtifacts(
                     projectName: 'NOMBRE_DEL_JOB_DE_BUILD', // Cambia por el nombre real de tu job de build
-                    selector: lastSuccessful(),
-                    fingerprintArtifacts: true
+                    selector: 'lastSuccessful',
+                    filter: 'dist/**'
                 )
             }
         }
