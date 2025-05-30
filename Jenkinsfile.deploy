@@ -12,7 +12,7 @@ pipeline {
             steps {
                 copyArtifacts(
                     projectName: 'Build',
-                    selector: 'lastSuccessful',
+                    selector: lastSuccessful(),
                     filter: 'dist/**'
                 )
             }
