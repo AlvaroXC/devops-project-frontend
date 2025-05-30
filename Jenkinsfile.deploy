@@ -2,34 +2,24 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Deploy') {
             steps {
-                // Clona tu repositorio con el código React
-                git 'https://github.com/AlvaroXC/devops-project-frontend.git'
-            }
-        }
+                sshagent(['ssh-jenkins-vm']) {  // Usa el ID de credencial SSH en Jenkins
+                    // Copia los archivos build a la ruta donde Nginx sirve la app
+                    sh 'scp -r build/* devops@192.168.100.62:/var/www/react_app/'
 
-        stage('Install Dependencies') {
-            steps {
-                // Instala las dependencias con npm
-                sh 'npm install'
-            }
-        }
-
-        stage('Build') {
-            steps {
-                // Construye la aplicación React para producción
-                sh 'npm run build'
+                    sh 'ssh devobs@192.168.100.62 "sudo chown -R www-data:www-data /var/www/react_app && sudo systemctl restart nginx"'
+                }
             }
         }
     }
 
     post {
         success {
-            echo 'Build completado con éxito.'
+            echo 'Despliegue completado con éxito.'
         }
         failure {
-            echo 'Falló el build.'
+            echo 'Error durante el despliegue.'
         }
     }
 }
