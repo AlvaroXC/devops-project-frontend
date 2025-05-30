@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Clona tu repositorio con el código React
+                git 'https://github.com/AlvaroXC/devops-project-frontend.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                // Instala las dependencias con npm
+                sh 'npm install'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Construye la aplicación React para producción
+                sh 'npm run build'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build completado con éxito.'
+        }
+        failure {
+            echo 'Falló el build.'
+        }
+    }
+}

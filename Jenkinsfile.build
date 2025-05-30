@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Deploy') {
+            steps {
+                sshagent(['ssh-jenkins-vm']) {  // Usa el ID de credencial SSH en Jenkins
+                    // Copia los archivos build a la ruta donde Nginx sirve la app
+                    sh 'scp -r build/* devops@192.168.100.62:/var/www/react_app/'
+
+                    sh 'ssh devobs@192.168.100.62 "sudo chown -R www-data:www-data /var/www/react_app && sudo systemctl restart nginx"'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Despliegue completado con éxito.'
+        }
+        failure {
+            echo 'Error durante el despliegue.'
+        }
+    }
+}
